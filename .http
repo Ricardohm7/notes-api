@@ -1,0 +1,31 @@
+GET http://localhost:3000/
+
+###
+GET http://localhost:3000/api/notes
+
+###
+GET http://localhost:3000/api/notes/65166b9444aa23a5ca00c086
+
+###
+POST http://localhost:3000/api/notes
+Content-Type: application/json
+
+{
+  "content": "This is a note",
+  "important": true
+}
+
+###
+DELETE http://localhost:3000/api/notes/65166c4444aa23a5ca00c08a
+
+###
+PUT http://localhost:3000/api/notes/651645f5a62ca6fd33436372
+Content-Type: application/json
+
+{
+  "content": "This is a note (modified)",
+  "important": true
+}
+
+###
+GET http://localhost:3000/api/lang
