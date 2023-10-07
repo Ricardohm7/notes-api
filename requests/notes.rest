@@ -9,11 +9,11 @@ GET http://localhost:3000/api/notes/65166b9444aa23a5ca00c086
 ###
 POST http://localhost:3000/api/notes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlJpY2FyZG9obSIsImlkIjoiNjUxZDAzNTk5NDMyYjAzMWMwMjVkNDA0IiwiaWF0IjoxNjk2NzE1ODI0fQ.FgJ6YpHNyIfZphI-0kRfKALvcFmghGVt7JTSMmPjskg
 
 {
-  "content": "Nueva nota con usario incluido",
-  "important": true,
-  "userId": "651d03599432b031c025d404"
+  "content": "utilizando el middleware userExtractor",
+  "important": true
 }
 
 ###
