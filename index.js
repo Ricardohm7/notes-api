@@ -6,6 +6,8 @@ const app = express()
 const Note = require('./models/Note')
 const notFound = require('./middleware/notFound')
 const handleErrors = require('./middleware/handleErrors')
+const usersRouter = require('./controllers/users')
+const User = require('./models/User')
 
 app.use(express.json())
 
@@ -14,7 +16,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/notes', async (req, res) => {
-  const notes = await Note.find({})
+  const notes = await Note.find({}).populate('user', { username: 1, name: 1 })
   return res.json(notes)
 })
 
@@ -32,21 +34,28 @@ app.get('/api/notes/:id', (req, res, next) => {
 })
 
 app.post('/api/notes', async (req, res, next) => {
-  const note = req.body
-  if (!note.content) {
+  const { content, important = false, userId } = req.body
+  console.log('userId', userId)
+  const user = await User.findById(userId)
+  console.log('user---->', user)
+
+  if (!content) {
     return res.status(400).json({
       error: 'note.content is missing'
     })
   }
 
   const newNote = new Note({
-    content: note.content,
-    important: note.important || false,
+    content,
+    important,
     date: new Date(),
+    user: user._id
   })
 
   try {
     const savedNote = await newNote.save()
+    user.notes = user.notes.concat(savedNote._id)
+    await user.save()
     return res.status(201).json(savedNote)
   } catch (error) {
     next(error)
@@ -77,6 +86,8 @@ app.delete('/api/notes/:id', async (request, response, next) => {
     next(error)
   }
 })
+
+app.use('/api/users', usersRouter)
 
 app.use(notFound)
 
